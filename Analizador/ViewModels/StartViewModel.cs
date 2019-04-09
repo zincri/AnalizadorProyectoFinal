@@ -156,34 +156,95 @@
 
         private int Inspeccionar(char Caracter)
         {
-            int valor=0;
-            if(((int)Caracter >= 65) && ((int)Caracter <= 122) && ((int)Caracter != 91)
-               && ((int)Caracter != 92) && ((int)Caracter != 93) && ((int)Caracter != 94)
-               && ((int)Caracter != 95 && ((int)Caracter != 96)))
+            int valor = 0;
+            if (((int)Caracter >= 65) && ((int)Caracter <= 70))
+
+
             {
-                    valor = 0; 
+                valor = 3;
             }
             else
             {
-                switch (Caracter)
+                if (((int)Caracter >= 48) && ((int)Caracter <= 57))
                 {
-                    
-                    case '0':
-                        valor = 0;
-                        break;
-                    case ')':
+                    valor = 4;
+                }
+                else
+                {
+                    switch (Caracter)
+                    {
+
+                        case '0':
+                            valor = 0;
+                            break;
+                        case '1':
+                            valor = 1;
+                            break;
+                        case 'H':
                             valor = 2;
                             break;
-                    case ';':
-                            valor = 3;
-                            break;
-                    case '#':
+                        case '+':
                             valor = 4;
                             break;
-                     
-                    default:
-                        valor = 5;//Aqui tenia 4
-                        break;
+
+                        case '-':
+                            valor = 6;
+                            break;
+
+
+                        case '*':
+                            valor = 7;
+                            break;
+
+
+                        case '/':
+                            valor = 8;
+                            break;
+
+
+                        case 'Z':
+                            valor = 9;
+                            break;
+
+
+                        case '.':
+                            valor = 10;
+                            break;
+
+
+                        case ':':
+                            valor = 11;
+                            break;
+
+
+                        case ';':
+                            valor = 12;
+                            break;
+
+                        case '¡':
+                            valor = 13;
+                            break;
+
+                        case 'I':
+                            valor = 14;
+                            break;
+
+                        case 'v':
+                            valor = 15;
+                            break;
+
+                        case 'X':
+                            valor = 16;
+                            break;
+
+                        case ' ':
+                            valor = 17;
+                            break;
+
+                        default:
+                            valor = 18;
+                            break;
+                    }
                 }
             }
 
