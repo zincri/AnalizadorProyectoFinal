@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Analizador.Views.StartPage"
+             BindingContext="{Binding Main, Source={StaticResource Locator}}">
+    <ContentPage.Content>
+        <ScrollView BindingContext="{Binding Start}">
+        <StackLayout
+            Padding="10">
+            <Label Text="INGRESE LA CADENA"
+                   FontSize="Large"
+                   HorizontalOptions="Center"
+                   VerticalOptions="CenterAndExpand" />
+            <Entry FontSize="Default"
+                   Text="{Binding Cadena, Mode=TwoWay}"
+                   HorizontalOptions="FillAndExpand"
+                   VerticalOptions="Start"/>
+            <Button Text="Enviar cadena"
+                    BackgroundColor="Navy"
+                    BorderRadius="23"
+                    Command="{Binding SetCadenaCommand}"
+                    TextColor="White"/>
+            <Label Text="{Binding Numeros, Mode=TwoWay}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="CenterAndExpand" />
+    </StackLayout>
+    </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

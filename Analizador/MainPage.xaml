@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Analizador"
+             x:Class="Analizador.MainPage">
+    <StackLayout>
+        <!-- Place new controls here -->
+        <Entry FontSize="Medium"
+               HorizontalOptions="CenterAndExpand"
+               VerticalOptions="Start"
+               x:Name="palabra"/>
+        <Button Text="Enviar cadena"
+                x:Name="boton"
+                />
+        <Label Text="{Binding msj}"
+               HorizontalOptions="Center"
+               VerticalOptions="CenterAndExpand" />
+    </StackLayout>
+</ContentPage>
