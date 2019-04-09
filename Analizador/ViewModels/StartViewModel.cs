@@ -152,8 +152,6 @@
         private void Avanzar()
         {
             Indice++;
-
-
         }
 
         private int Inspeccionar(char Caracter)
