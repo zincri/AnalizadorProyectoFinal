@@ -121,13 +121,17 @@
                 {
                     this.Numeros = "Cadena no aceptada en el caracter: " + (Indice + 1);
                 }
-                if (band == 1) { this.Numeros = "Cadena exitosa"; }
-                else { this.Numeros = "Cadena erronea"; }
+                else {
+                    if (band == 1) { this.Numeros = "Cadena exitosa"; }
+                    else { this.Numeros = "Cadena erronea"; }
+                }
+
             }
 
 
         }
 
+        #region Sintactico
         private int verficaOrden(List<int> listTokens)
         {
             List<int> vOperandos = new List<int>();
@@ -157,9 +161,6 @@
             vResultados.Add(1019);
 
             int Espacio = 1020;
-            //bool band = false;
-            //int Contadorplus=0;
-            //int contadortipotoken=0;
 
             listTokens.RemoveAt(listTokens.Count - 1);
             listTokens.RemoveAt(listTokens.Count - 1);
@@ -167,48 +168,51 @@
             int ultimo = arrayANA[listTokens.Count - 1];
             listTokens.RemoveAt(listTokens.Count - 1);
             arrayANA = listTokens.ToArray();
-            bool flagOp=false;
+            bool flagOp = false;
 
-            for (int i = 0; i < listTokens.Count ; i++)
+            for (int i = 0; i < listTokens.Count; i++)
             {
                 if (i == 0) { flagOp = true; }
 
-                if (i % 2 == 0){
+                if (i % 2 == 0)
+                {
 
-                    if(flagOp==true) {
-                        if (!vOperandos.Contains(arrayANA[i])) {
-                             return 0;
-                             }
+                    if (flagOp == true)
+                    {
+                        if (!vOperandos.Contains(arrayANA[i]))
+                        {
+                            return 0;
+                        }
                         flagOp = false;
 
                     }
-                    else { 
-                        if (!vOperadores.Contains(arrayANA[i])){
-                             return 0; 
-                             }
+                    else
+                    {
+                        if (!vOperadores.Contains(arrayANA[i]))
+                        {
+                            return 0;
+                        }
                         flagOp = true;
 
 
                     }
                 }
-                else if (i % 2 != 0) {
+                else if (i % 2 != 0)
+                {
                     if (arrayANA[i] != Espacio)
                         return 0;
                 }
             }
-            if (!vResultados.Contains(ultimo)) {
+            if (!vResultados.Contains(ultimo))
+            {
                 return 0;
-                }
+            }
             return 1;
-            /*
-            if (band)
-                return 1;
-            else
-                return 0;
-            */               
 
         }
+        #endregion
 
+        #region Lexico
         private int AnalizadorLexico()
         {
             Estado = 0;
@@ -216,7 +220,7 @@
 
             if (C == 2)
             {
-            flagHex=true; 
+                flagHex = true;
             }
             if (C == 17)
             {
@@ -226,6 +230,10 @@
             {
                 return 2000;
             }
+            if (C == 21)
+            {
+                return -1;
+            }
 
             Contador = 0;
             Nuevo_estado = Matriz[Estado, C];
@@ -234,23 +242,27 @@
                 return -1;
             }
 
-            while (Nuevo_estado < 1000 && Nuevo_estado!=-1)
+            while (Nuevo_estado < 1000 && Nuevo_estado != -1)
             {
                 if (Indice == (array.Length - 1))
                     break;
                 Avanzar();
                 C = Inspeccionar(array[Indice]);
-                if(C==2)
+                if (C == 2)
                 {
-                    flagHex=true; 
+                    flagHex = true;
                 }
-                if(C==17)
+                if (C == 17)
                 {
                     flagHex = false;
                 }
                 if (C == 22)
                 {
                     return 2000;
+                }
+                if (C == 21)
+                {
+                    return -1;
                 }
                 Estado = Nuevo_estado;
                 Nuevo_estado = Matriz[Estado, C];
@@ -259,14 +271,16 @@
             if (Contador == 0 && Indice != (array.Length - 1))
                 Avanzar();
             return Nuevo_estado;
-            
+
         }
+        #endregion
 
         private void Avanzar()
         {
             Indice++;
         }
 
+        #region Inspeccionar
         private int Inspeccionar(char Caracter)
         {
             int valor = 0;
@@ -276,10 +290,11 @@
             }
             else
             {
-                if (flagHex && ((int)Caracter >= 48) && ((int)Caracter <= 57)) {
+                if (flagHex && ((int)Caracter >= 48) && ((int)Caracter <= 57))
+                {
                     valor = 4;
                 }
-                
+
                 else
                 {
                     switch (Caracter)
@@ -377,8 +392,10 @@
 
             return valor;
         }
+        #endregion
 
 
+        #region Matriz
         private void InicializarMatriz()
         {
             Matriz[0, 0] = 1;
@@ -417,7 +434,7 @@
             Matriz[1, 11] = -1;
             Matriz[1, 12] = -1;
             Matriz[1, 13] = -1;
-            Matriz[1, 14] = -1; 
+            Matriz[1, 14] = -1;
             Matriz[1, 15] = -1;
             Matriz[1, 16] = -1;
             Matriz[1, 17] = 1000;
@@ -439,7 +456,7 @@
             Matriz[2, 11] = -1;
             Matriz[2, 12] = -1;
             Matriz[2, 13] = -1;
-            Matriz[2, 14] = -1; 
+            Matriz[2, 14] = -1;
             Matriz[2, 15] = -1;
             Matriz[2, 16] = -1;
             Matriz[2, 17] = 1000;
@@ -461,7 +478,7 @@
             Matriz[3, 11] = -1;
             Matriz[3, 12] = -1;
             Matriz[3, 13] = -1;
-            Matriz[3, 14] = -1; 
+            Matriz[3, 14] = -1;
             Matriz[3, 15] = -1;
             Matriz[3, 16] = -1;
             Matriz[3, 17] = 1000;
@@ -483,7 +500,7 @@
             Matriz[4, 11] = -1;
             Matriz[4, 12] = -1;
             Matriz[4, 13] = -1;
-            Matriz[4, 14] = -1; 
+            Matriz[4, 14] = -1;
             Matriz[4, 15] = -1;
             Matriz[4, 16] = -1;
             Matriz[4, 17] = 1000;
@@ -505,7 +522,7 @@
             Matriz[5, 11] = -1;
             Matriz[5, 12] = -1;
             Matriz[5, 13] = -1;
-            Matriz[5, 14] = -1; 
+            Matriz[5, 14] = -1;
             Matriz[5, 15] = -1;
             Matriz[5, 16] = -1;
             Matriz[5, 17] = 1000;
@@ -527,7 +544,7 @@
             Matriz[6, 11] = -1;
             Matriz[6, 12] = -1;
             Matriz[6, 13] = -1;
-            Matriz[6, 14] = -1; 
+            Matriz[6, 14] = -1;
             Matriz[6, 15] = -1;
             Matriz[6, 16] = -1;
             Matriz[6, 17] = 1000;
@@ -549,7 +566,7 @@
             Matriz[7, 11] = -1;
             Matriz[7, 12] = -1;
             Matriz[7, 13] = -1;
-            Matriz[7, 14] = -1; 
+            Matriz[7, 14] = -1;
             Matriz[7, 15] = -1;
             Matriz[7, 16] = -1;
             Matriz[7, 17] = 1000;
@@ -571,7 +588,7 @@
             Matriz[8, 11] = -1;
             Matriz[8, 12] = -1;
             Matriz[8, 13] = -1;
-            Matriz[8, 14] = -1; 
+            Matriz[8, 14] = -1;
             Matriz[8, 15] = -1;
             Matriz[8, 16] = -1;
             Matriz[8, 17] = 1000;
@@ -593,7 +610,7 @@
             Matriz[9, 11] = -1;
             Matriz[9, 12] = -1;
             Matriz[9, 13] = -1;
-            Matriz[9, 14] = -1; 
+            Matriz[9, 14] = -1;
             Matriz[9, 15] = -1;
             Matriz[9, 16] = -1;
             Matriz[9, 17] = 1001;
@@ -1109,6 +1126,7 @@
 
 
         }
+        #endregion
         #endregion
     }
 }
