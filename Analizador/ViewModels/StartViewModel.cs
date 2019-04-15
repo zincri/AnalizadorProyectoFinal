@@ -1,6 +1,7 @@
 ﻿namespace Analizador.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
     using System.Text.RegularExpressions;
@@ -10,7 +11,7 @@
     public class StartViewModel: INotifyPropertyChanged
     {
         #region Variables
-        int[,] Matriz = new int[29, 21];//[5, 5];  29 filas y 21 columnas
+        int[,] Matriz = new int[29, 21];//  29 filas y 21 columnas
         char[] array;
         int Indice = 0;
         int Estado = 0;
@@ -93,8 +94,7 @@
             array = (this.Cadena+"^").ToCharArray(); //Simbolo que no uso en mis caracteres ^
 
             //me falto el indice correrlo a 0 otra vez
-            Indice = 0;
-            while (Token!=4000)
+            Indice = 0;           while (Token!=4000)
             {
                 Token = AnalizadorLexico();
                 this.Numeros = this.Numeros + "[" + Token.ToString() + "]";
@@ -106,6 +106,8 @@
 
 
         }
+
+
 
         private int AnalizadorLexico()
         {
@@ -289,7 +291,7 @@
             Matriz[0, 5] = -1;
             Matriz[0, 6] = 12;
 
-            Matriz[0, 7] = 16;// 0...9 
+             Matriz[0, 7] = 16;// 0...9 
 
             Matriz[0, 8] = 14;
             Matriz[0, 9] = -1;
