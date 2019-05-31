@@ -116,12 +116,13 @@
                     listTokens.Add(Token);
 
                 }
-                int band = verficaOrden(listTokens);
+                //int band = verficaOrden(listTokens);
                 if (flag)
                 {
                     this.Numeros = "Cadena no aceptada en el caracter: " + (Indice + 1);
                 }
                 else {
+                    int band = verficaOrden(listTokens);
                     if (band == 1) { this.Numeros = "Cadena exitosa"; }
                     else { this.Numeros = "Cadena erronea"; }
                 }
@@ -284,7 +285,7 @@
         private int Inspeccionar(char Caracter)
         {
             int valor = 0;
-            if (((int)Caracter >= 65) && ((int)Caracter <= 70))
+            if (((int)Caracter >= 65) && ((int)Caracter <= 70) || ((int)Caracter >= 97) && ((int)Caracter <= 102))
             {
                 valor = 3;
             }
