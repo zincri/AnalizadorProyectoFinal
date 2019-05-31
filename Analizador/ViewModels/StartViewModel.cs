@@ -7,6 +7,7 @@
     using System.Text.RegularExpressions;
     using System.Windows.Input;
     using GalaSoft.MvvmLight.Command;
+    using System.Linq;
 
     public class StartViewModel: INotifyPropertyChanged
     {
@@ -123,13 +124,95 @@
                 }
                 else {
                     int band = verficaOrden(listTokens);
-                    if (band == 1) { this.Numeros = "Cadena exitosa"; }
+                    if (band == 1) 
+                    {
+                        //this.Numeros = "Cadena exitosa";
+
+                        //CambiarTokenParaTipos(listTokens);
+                        //AnalizadorSemantico(listTokens);
+                        this.Numeros = String.Empty;
+                        //string valortemporaldelvalorcontenido;
+                        foreach (var item in listTokens)
+                        {
+                            this.Numeros = Numeros + buscarTipo(item);
+                            //valortemporaldelvalorcontenido=this.Cadena.s
+                        }
+                        string []ValoresSeparados = Cadena.Split(' ');
+
+                        this.Numeros = Numeros + "\n" + this.Cadena+"\n";
+
+                        foreach (var item in ValoresSeparados)
+                        {
+                            this.Numeros = Numeros + item + "";
+                            //valortemporaldelvalorcontenido=this.Cadena.s
+                        }
+                    }
                     else { this.Numeros = "Cadena erronea"; }
                 }
 
             }
 
 
+        }
+
+        private char buscarTipo(int token)
+        {
+            char tipo=' ';
+            switch (token) {
+                case 1000:
+                    tipo = 'B';
+                    break;
+                case 1001:
+                    tipo = 'H';
+                    break;
+                case 1002:
+                    tipo = '+';
+                    break;
+                case 1003:
+                    tipo = '-';
+                    break;
+                case 1004:
+                    tipo = '*';
+                    break;
+                case 1005:
+                    tipo = '/';
+                    break;
+                case 1006:
+                    tipo = 'Z';
+                    break;
+                case 1007:
+                case 1008:
+                case 1009:
+                case 1010:
+                case 1011:
+                case 1012:
+                case 1013:
+                case 1014:
+                case 1015:
+                case 1016:
+                    tipo = 'R';
+                    break;
+
+                #region Inservibles
+                /*AQUI SE PUEDEN QUITAR YA QUE NO SE TOMA EN CUENTA EL SIMBOLO DE RESULTADO EN ESTA PARTE*/
+                case 1017:
+                    tipo = 'D';
+                    break;
+                case 1018:
+                    tipo = 'X';
+                    break;
+                case 1019:
+                    tipo = 'S';
+                    break;
+                #endregion
+                case 1020:
+                    tipo = '_';
+                    break;
+                
+
+            }
+            return tipo;
+             
         }
 
         #region Sintactico
