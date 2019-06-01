@@ -8,6 +8,7 @@
     using System.Windows.Input;
     using GalaSoft.MvvmLight.Command;
     using System.Linq;
+    using Analizador.Helpers;
 
     public class StartViewModel: INotifyPropertyChanged
     {
@@ -86,6 +87,9 @@
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Este metodo se ejecuta cuando se pulsa el boton "Enviar Cadena"
+        /// </summary>
         private async void SetCadena()
         {
             if (string.IsNullOrEmpty(this.Cadena))
@@ -117,7 +121,6 @@
                     listTokens.Add(Token);
 
                 }
-                //int band = verficaOrden(listTokens);
                 if (flag)
                 {
                     this.Numeros = "Cadena no aceptada en el caracter: " + (Indice + 1);
@@ -127,25 +130,8 @@
                     if (band == 1) 
                     {
                         //this.Numeros = "Cadena exitosa";
-
-                        //CambiarTokenParaTipos(listTokens);
-                        //AnalizadorSemantico(listTokens);
-                        this.Numeros = String.Empty;
-                        //string valortemporaldelvalorcontenido;
-                        foreach (var item in listTokens)
-                        {
-                            this.Numeros = Numeros + buscarTipo(item);
-                            //valortemporaldelvalorcontenido=this.Cadena.s
-                        }
-                        string []ValoresSeparados = Cadena.Split(' ');
-
-                        this.Numeros = Numeros + "\n" + this.Cadena+"\n";
-
-                        foreach (var item in ValoresSeparados)
-                        {
-                            this.Numeros = Numeros + item + "";
-                            //valortemporaldelvalorcontenido=this.Cadena.s
-                        }
+                        AnalizadorSemantico(listTokens);
+                        
                     }
                     else { this.Numeros = "Cadena erronea"; }
                 }
@@ -155,6 +141,189 @@
 
         }
 
+        private void AnalizadorSemantico(List<int> listTokens) {
+
+            this.Numeros = String.Empty;
+            List<char> listaTipos =  new List<char>();
+            List<String> listaValores_sin_convertir;
+            List<int> listaValores = new List<int>();
+            foreach (var item in listTokens)
+            {
+
+                this.Numeros = Numeros + buscarTipo(item);
+                if(buscarTipo(item)!=(char)00)
+                    listaTipos.Add(buscarTipo(item));
+            }
+            string[] ValoresSeparados = Cadena.Split(' ');
+            listaValores_sin_convertir = ValoresSeparados.OfType<String>().ToList();
+            listaValores_sin_convertir.RemoveAt(listaValores_sin_convertir.Count-1);
+
+            for (int i = 0; i < listaValores_sin_convertir.Count; i++)
+            {
+                listaValores.Add(ExtraerValor(listaTipos.ElementAt(i),listaValores_sin_convertir.ElementAt(i)));
+            }
+
+            List<int> pila_operandos = new List<int>();
+            List<int> pila_operadores = new List<int>();
+            bool bandera_operandos_operador=true;
+            bool bandera_error_matematico = false;
+            int operador_temporal;
+
+            for (int i = 0; i < listaValores.Count; i++)
+            {
+                if (bandera_operandos_operador) 
+                {
+                    pila_operandos.Add(listaValores.ElementAt(i));
+                    bandera_operandos_operador = false;
+                }
+                else 
+                {
+                    if (pila_operadores.Count == 0)
+                        pila_operadores.Add(listaValores.ElementAt(i));
+                    else
+                    {
+                        //AQUI
+                        int prioridad_pila_operadores = pila_operadores.Last() == 1 || pila_operadores.Last() == 2 ? 1 : 2;
+                        int prioridad_indice = listaValores.ElementAt(i) == 1 || listaValores.ElementAt(i) == 2 ? 1 : 2;
+
+                        if (prioridad_pila_operadores < prioridad_indice)
+                        {
+                            pila_operadores.Add(listaValores.ElementAt(i));
+                        }
+                        else if (prioridad_pila_operadores > prioridad_indice) 
+                        {
+                            operador_temporal = pila_operadores.Last();
+                            pila_operadores.RemoveAt(pila_operadores.Count - 1);
+                            int Top = pila_operandos.Last();
+                            pila_operandos.RemoveAt(pila_operandos.Count-1);
+                            int TopMenos1 = pila_operandos.Last();
+                            pila_operandos.RemoveAt(pila_operandos.Count - 1);
+                            int resultado = RealizarOperacionTipoCuadruplo(TopMenos1,Top,operador_temporal);
+                            if (resultado == -1) { bandera_error_matematico = true; break; }
+                            pila_operandos.Add(resultado);
+                            pila_operadores.Add(listaValores.ElementAt(i));
+                        }
+                        else if (prioridad_pila_operadores == prioridad_indice)
+                        {
+                            operador_temporal = pila_operadores.Last();
+                            pila_operadores.RemoveAt(pila_operadores.Count - 1);
+                            int Top = pila_operandos.Last();
+                            pila_operandos.RemoveAt(pila_operandos.Count - 1);
+                            int TopMenos1 = pila_operandos.Last();
+                            pila_operandos.RemoveAt(pila_operandos.Count - 1);
+                            int resultado = RealizarOperacionTipoCuadruplo(TopMenos1, Top, operador_temporal);
+                            if (resultado == -1) { bandera_error_matematico = true; break; }
+                            pila_operandos.Add(resultado);
+                            pila_operadores.Add(listaValores.ElementAt(i));
+                        }
+
+                    }
+                    bandera_operandos_operador = true;
+                }
+            }
+
+            while (pila_operadores.Count != 0)
+            {
+                operador_temporal = pila_operadores.Last();
+                pila_operadores.RemoveAt(pila_operadores.Count - 1);
+                int Top = pila_operandos.Last();
+                pila_operandos.RemoveAt(pila_operandos.Count - 1);
+                int TopMenos1 = pila_operandos.Last();
+                pila_operandos.RemoveAt(pila_operandos.Count - 1);
+                int resultado = RealizarOperacionTipoCuadruplo(TopMenos1, Top, operador_temporal);
+                if (resultado == -1) { bandera_error_matematico=true; break;}
+
+                pila_operandos.Add(resultado);
+            }
+            if (bandera_error_matematico) 
+            {
+                App.Current.MainPage.DisplayAlert("Error","Error matematico, divicion entre 0","Ok");
+                this.Numeros = "Error";//String.Empty;
+                return;
+            }
+            this.Numeros = pila_operandos.Last().ToString();
+
+            /* Descomenta cuando acabez para sabez si todo sale bien
+            this.Numeros = Numeros + "\n" + this.Cadena + "\n"; // Esta linea es solo para saber si si va todo chido
+
+            foreach (var item in ValoresSeparados)
+            {
+                this.Numeros = Numeros + item + "";
+            }
+            */
+        }
+
+        private int RealizarOperacionTipoCuadruplo(int TopMenos1,int Top, int Operacion) 
+        {
+            int resultado = -1;
+            switch(Operacion)
+            {
+                case 1:
+                    resultado = TopMenos1 + Top;
+                    break;
+                case 2:
+                    resultado = TopMenos1 - Top;
+                    break;
+                case 3:
+                    resultado = TopMenos1 * Top;
+                    break;
+                case 4:
+                    if (Top == 0) { break; }
+                    resultado = TopMenos1 / Top;
+                    break;
+            }
+            return resultado; 
+        }
+
+        /// <summary>
+        /// Se puede extraer el valor en los valores que son convertibles,
+        /// en caso de que el parametro valor sea un operador solo se le asigna una prioridad.
+        /// </summary>
+        /// <returns>The valor.</returns>
+        /// <param name="tipo">Tipo.</param>
+        /// <param name="valor_a_extraer">Valor a extraer.</param>
+        private int ExtraerValor(char tipo, string valor_a_extraer)
+        {
+            int valor = 0;
+            switch (tipo) 
+            {
+                case 'B':
+                    valor=ZincriConverters.BinarioADecimal(valor_a_extraer);
+                    break;
+                case 'H':
+                    valor_a_extraer=valor_a_extraer.Substring(1);
+                    valor = ZincriConverters.HexadecimalADecimal(valor_a_extraer);
+                    break;
+                case '+':
+                    valor = 1;
+                    break;
+                case '-':
+                    valor = 2;
+                    break;
+                case '*':
+                    valor = 3;
+                    break;
+                case '/':
+                    valor = 4;
+                    break;
+                case 'Z':
+                    valor_a_extraer = valor_a_extraer.Substring(1);
+                    valor = ZincriConverters.NumeroZADecimal(valor_a_extraer);
+                    break;
+                case 'R':
+                    valor = ZincriConverters.RomanoADecimal(valor_a_extraer);
+                    break;
+            }
+
+            return valor;
+        }
+
+        /// <summary>
+        /// En esta funcion se recibe un token y dependiendo el rango o numero que sea el token,
+        /// ésta funcion devolvera el tipo de dato representativo (para nuestra perspectiva). 
+        /// </summary>
+        /// <returns>The tipo.</returns>
+        /// <param name="token">Token.</param>
         private char buscarTipo(int token)
         {
             char tipo=' ';
@@ -206,7 +375,7 @@
                     break;
                 #endregion
                 case 1020:
-                    tipo = '_';
+                    tipo = (char)00;
                     break;
                 
 
@@ -216,6 +385,12 @@
         }
 
         #region Sintactico
+        /// <summary>
+        /// Este Metodo verifica que el orden de la cadena sea correcto y
+        /// cumpla con las caracteristicas sintacticas.
+        /// </summary>
+        /// <returns>The orden.</returns>
+        /// <param name="listTokens">List tokens.</param>
         private int verficaOrden(List<int> listTokens)
         {
             List<int> vOperandos = new List<int>();
@@ -297,6 +472,10 @@
         #endregion
 
         #region Lexico
+        /// <summary>
+        /// Esta funcion es el algoritmo de nuestro analizador lexico
+        /// </summary>
+        /// <returns>The lexico.</returns>
         private int AnalizadorLexico()
         {
             Estado = 0;
@@ -365,6 +544,11 @@
         }
 
         #region Inspeccionar
+        /// <summary>
+        /// Esta funcion nos devuelve la columna dada por el caracter que se ingrese.
+        /// </summary>
+        /// <returns>The inspeccionar.</returns>
+        /// <param name="Caracter">Caracter.</param>
         private int Inspeccionar(char Caracter)
         {
             int valor = 0;
@@ -480,6 +664,9 @@
 
 
         #region Matriz
+        /// <summary>
+        /// Este metodo llena la matriz o tabla de transicion
+        /// </summary>
         private void InicializarMatriz()
         {
             Matriz[0, 0] = 1;

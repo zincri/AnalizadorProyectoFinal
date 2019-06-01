@@ -13,5 +13,6 @@
     <Folder Include="ViewModels\" />
     <Folder Include="Views\" />
     <Folder Include="Infrastructure\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 </Project>
