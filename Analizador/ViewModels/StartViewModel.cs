@@ -257,7 +257,7 @@
 
             if (ultimo == 1019)
             {
-                if (resultado_que_esta_en_top > 10)
+                if (resultado_que_esta_en_top > 10 || resultado_que_esta_en_top <=0)
                 {
                     this.Numeros = "El valor exede la represacion Romana.";
                 }
