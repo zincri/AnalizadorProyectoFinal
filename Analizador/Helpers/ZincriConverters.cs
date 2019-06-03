@@ -27,16 +27,49 @@ namespace Analizador.Helpers
         {
             return int.Parse(valor_a_extraer, System.Globalization.NumberStyles.HexNumber);
         }
+
+        public static string DecimalAHexadecimal(int valor_a_extraer)
+        {
+            return string.Format("{0:x}", valor_a_extraer);
+        }
         public static int NumeroZADecimal(string valor_a_extraer)
         {
-            char[] array = valor_a_extraer.ToCharArray();
-            /*PENDIENTE
-            switch (indice) 
+            int valor = 0;
+            switch (valor_a_extraer)
             {
-                case  
+                case ".":
+                    valor = 1;
+                    break;
+                case ":":
+                    valor = 2;
+                    break;
+                case ";":
+                    valor = 3;
+                    break;
+                case ".;":
+                    valor = 4;
+                    break;
+                case ":;":
+                    valor = 5;
+                    break;
+                case ";;":
+                    valor = 6;
+                    break;
+                case ".;;":
+                    valor = 7;
+                    break;
+                case ":;;":
+                    valor = 8;
+                    break;
+                case ";;;":
+                    valor = 9;
+                    break;
+                case "¡":
+                    valor = 10;
+                    break;
             }
-            */
-            return 0;
+
+            return valor;
         }
         public static int RomanoADecimal(string valor_a_extraer)
         {
@@ -72,6 +105,46 @@ namespace Analizador.Helpers
                     break;
                 case "X":
                     valor = 10;
+                    break;
+            }
+
+            return valor;
+        }
+
+        public static string DecimalARomano(int valor_a_convertir)
+        {
+            string valor = string.Empty;
+            switch (valor_a_convertir)
+            {
+                case 1:
+                    valor = "I";
+                    break;
+                case 2:
+                    valor = "II";
+                    break;
+                case 3:
+                    valor = "III";
+                    break;
+                case 4:
+                    valor = "IV";
+                    break;
+                case 5:
+                    valor = "V";
+                    break;
+                case 6:
+                    valor = "VI";
+                    break;
+                case 7:
+                    valor = "VII";
+                    break;
+                case 8:
+                    valor = "VIII";
+                    break;
+                case 9:
+                    valor = "IX";
+                    break;
+                case 10:
+                    valor = "X";
                     break;
             }
 

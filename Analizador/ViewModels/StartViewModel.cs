@@ -13,7 +13,7 @@
     public class StartViewModel: INotifyPropertyChanged
     {
         #region Variables
-        int[,] Matriz = new int[33, 21];//[5, 5];
+        int[,] Matriz = new int[42, 21];//[5, 5];
         char[] array;
         int Indice = 0;
         int Estado = 0;
@@ -21,6 +21,7 @@
         int Contador = 0;
         int Nuevo_estado = 0;
         bool flagHex=false;
+        int ultimo=1017;
         #endregion
 
         #region Properties
@@ -140,7 +141,10 @@
 
 
         }
-
+        /// <summary>
+        /// Este metodo es el analizador semantico
+        /// </summary>
+        /// <param name="listTokens">List tokens.</param>
         private void AnalizadorSemantico(List<int> listTokens) {
 
             this.Numeros = String.Empty;
@@ -220,6 +224,8 @@
                     }
                     bandera_operandos_operador = true;
                 }
+
+
             }
 
             while (pila_operadores.Count != 0)
@@ -241,9 +247,48 @@
                 this.Numeros = "Error";//String.Empty;
                 return;
             }
-            this.Numeros = pila_operandos.Last().ToString();
 
-            /* Descomenta cuando acabez para sabez si todo sale bien
+
+
+            /*__________________________________________________*/
+
+
+            int resultado_que_esta_en_top = pila_operandos.Last();
+
+            if (ultimo == 1019)
+            {
+                if (resultado_que_esta_en_top > 10)
+                {
+                    this.Numeros = "El valor exede la represacion Romana.";
+                }
+                else
+                {
+                    //Convertir a romano 
+                    this.Numeros = "El resultado es: " + ZincriConverters.DecimalARomano(resultado_que_esta_en_top);
+                }
+
+            }
+            else if (ultimo == 1018)
+            {
+                if (resultado_que_esta_en_top > 65535)
+                {
+                    this.Numeros = "El valor exede la represacion Hexadecimal.";
+                }
+                else
+                {
+                    //Convertir a HEX
+                    this.Numeros = "El resultado es: " + ZincriConverters.DecimalAHexadecimal(resultado_que_esta_en_top);
+
+                }
+            }
+            else if (ultimo == 1017)
+            {
+                this.Numeros = "El resultado es: " + pila_operandos.Last().ToString();
+            }
+            /*__________________________________________________*/
+
+
+            /* Descomenta cuando acabez para saber si todo sale bien ///simon ya!
             this.Numeros = Numeros + "\n" + this.Cadena + "\n"; // Esta linea es solo para saber si si va todo chido
 
             foreach (var item in ValoresSeparados)
@@ -347,6 +392,9 @@
                     tipo = '/';
                     break;
                 case 1006:
+                case 1023:
+                case 1024:
+                case 1025:
                     tipo = 'Z';
                     break;
                 case 1007:
@@ -407,6 +455,10 @@
             vOperandos.Add(1014);
             vOperandos.Add(1015);
             vOperandos.Add(1016);
+            //Numero Z, ultimos agregados.
+            vOperandos.Add(1023);
+            vOperandos.Add(1024);
+            vOperandos.Add(1025);
 
             List<int> vOperadores = new List<int>();
             vOperadores.Add(1002);
@@ -424,7 +476,7 @@
             listTokens.RemoveAt(listTokens.Count - 1);
             listTokens.RemoveAt(listTokens.Count - 1);
             int[] arrayANA = listTokens.ToArray();
-            int ultimo = arrayANA[listTokens.Count - 1];
+            ultimo = arrayANA[listTokens.Count - 1];
             listTokens.RemoveAt(listTokens.Count - 1);
             arrayANA = listTokens.ToArray();
             bool flagOp = false;
@@ -1076,9 +1128,9 @@
             Matriz[18, 8] = -1;
             Matriz[18, 9] = -1;
             Matriz[18, 10] = 19;
-            Matriz[18, 11] = 19;
-            Matriz[18, 12] = 19;
-            Matriz[18, 13] = 19;
+            Matriz[18, 11] = 35;
+            Matriz[18, 12] = 38;
+            Matriz[18, 13] = 41;
             Matriz[18, 14] = -1;
             Matriz[18, 15] = -1;
             Matriz[18, 16] = -1;
@@ -1097,10 +1149,10 @@
             Matriz[19, 7] = -1;
             Matriz[19, 8] = -1;
             Matriz[19, 9] = -1;
-            Matriz[19, 10] = 19;
-            Matriz[19, 11] = 19;
-            Matriz[19, 12] = 19;
-            Matriz[19, 13] = 19;
+            Matriz[19, 10] = -1;
+            Matriz[19, 11] = -1;
+            Matriz[19, 12] = 33;
+            Matriz[19, 13] = -1;
             Matriz[19, 14] = -1;
             Matriz[19, 15] = -1;
             Matriz[19, 16] = -1;
@@ -1394,6 +1446,204 @@
             Matriz[32, 18] = -1;
             Matriz[32, 19] = -1;
             Matriz[32, 20] = -1;
+            //Nuevos agregados
+            Matriz[33, 0] = -1;
+            Matriz[33, 1] = -1;
+            Matriz[33, 2] = -1;
+            Matriz[33, 3] = -1;
+            Matriz[33, 4] = -1;
+            Matriz[33, 5] = -1;
+            Matriz[33, 6] = -1;
+            Matriz[33, 7] = -1;
+            Matriz[33, 8] = -1;
+            Matriz[33, 9] = -1;
+            Matriz[33, 10] = -1;
+            Matriz[33, 11] = -1;
+            Matriz[33, 12] = 34;
+            Matriz[33, 13] = -1;
+            Matriz[33, 14] = -1;
+            Matriz[33, 15] = -1;
+            Matriz[33, 16] = -1;
+            Matriz[33, 17] = 1006;
+            Matriz[33, 18] = -1;
+            Matriz[33, 19] = -1;
+            Matriz[33, 20] = -1;
+
+            Matriz[34, 0] = -1;
+            Matriz[34, 1] = -1;
+            Matriz[34, 2] = -1;
+            Matriz[34, 3] = -1;
+            Matriz[34, 4] = -1;
+            Matriz[34, 5] = -1;
+            Matriz[34, 6] = -1;
+            Matriz[34, 7] = -1;
+            Matriz[34, 8] = -1;
+            Matriz[34, 9] = -1;
+            Matriz[34, 10] = -1;
+            Matriz[34, 11] = -1;
+            Matriz[34, 12] = -1;
+            Matriz[34, 13] = -1;
+            Matriz[34, 14] = -1;
+            Matriz[34, 15] = -1;
+            Matriz[34, 16] = -1;
+            Matriz[34, 17] = 1006;
+            Matriz[34, 18] = -1;
+            Matriz[34, 19] = -1;
+            Matriz[34, 20] = -1;
+
+            Matriz[35, 0] = -1;
+            Matriz[35, 1] = -1;
+            Matriz[35, 2] = -1;
+            Matriz[35, 3] = -1;
+            Matriz[35, 4] = -1;
+            Matriz[35, 5] = -1;
+            Matriz[35, 6] = -1;
+            Matriz[35, 7] = -1;
+            Matriz[35, 8] = -1;
+            Matriz[35, 9] = -1;
+            Matriz[35, 10] = -1;
+            Matriz[35, 11] = -1;
+            Matriz[35, 12] = 36;
+            Matriz[35, 13] = -1;
+            Matriz[35, 14] = -1;
+            Matriz[35, 15] = -1;
+            Matriz[35, 16] = -1;
+            Matriz[35, 17] = 1023;
+            Matriz[35, 18] = -1;
+            Matriz[35, 19] = -1;
+            Matriz[35, 20] = -1;
+
+            Matriz[36, 0] = -1;
+            Matriz[36, 1] = -1;
+            Matriz[36, 2] = -1;
+            Matriz[36, 3] = -1;
+            Matriz[36, 4] = -1;
+            Matriz[36, 5] = -1;
+            Matriz[36, 6] = -1;
+            Matriz[36, 7] = -1;
+            Matriz[36, 8] = -1;
+            Matriz[36, 9] = -1;
+            Matriz[36, 10] = -1;
+            Matriz[36, 11] = -1;
+            Matriz[36, 12] = 37;
+            Matriz[36, 13] = -1;
+            Matriz[36, 14] = -1;
+            Matriz[36, 15] = -1;
+            Matriz[36, 16] = -1;
+            Matriz[36, 17] = 1023;
+            Matriz[36, 18] = -1;
+            Matriz[36, 19] = -1;
+            Matriz[36, 20] = -1;
+
+            Matriz[37, 0] = -1;
+            Matriz[37, 1] = -1;
+            Matriz[37, 2] = -1;
+            Matriz[37, 3] = -1;
+            Matriz[37, 4] = -1;
+            Matriz[37, 5] = -1;
+            Matriz[37, 6] = -1;
+            Matriz[37, 7] = -1;
+            Matriz[37, 8] = -1;
+            Matriz[37, 9] = -1;
+            Matriz[37, 10] = -1;
+            Matriz[37, 11] = -1;
+            Matriz[37, 12] = -1;
+            Matriz[37, 13] = -1;
+            Matriz[37, 14] = -1;
+            Matriz[37, 15] = -1;
+            Matriz[37, 16] = -1;
+            Matriz[37, 17] = 1023;
+            Matriz[37, 18] = -1;
+            Matriz[37, 19] = -1;
+            Matriz[37, 20] = -1;
+
+            Matriz[38, 0] = -1;
+            Matriz[38, 1] = -1;
+            Matriz[38, 2] = -1;
+            Matriz[38, 3] = -1;
+            Matriz[38, 4] = -1;
+            Matriz[38, 5] = -1;
+            Matriz[38, 6] = -1;
+            Matriz[38, 7] = -1;
+            Matriz[38, 8] = -1;
+            Matriz[38, 9] = -1;
+            Matriz[38, 10] = -1;
+            Matriz[38, 11] = -1;
+            Matriz[38, 12] = 39;
+            Matriz[38, 13] = -1;
+            Matriz[38, 14] = -1;
+            Matriz[38, 15] = -1;
+            Matriz[38, 16] = -1;
+            Matriz[38, 17] = 1024;
+            Matriz[38, 18] = -1;
+            Matriz[38, 19] = -1;
+            Matriz[38, 20] = -1;
+
+            Matriz[39, 0] = -1;
+            Matriz[39, 1] = -1;
+            Matriz[39, 2] = -1;
+            Matriz[39, 3] = -1;
+            Matriz[39, 4] = -1;
+            Matriz[39, 5] = -1;
+            Matriz[39, 6] = -1;
+            Matriz[39, 7] = -1;
+            Matriz[39, 8] = -1;
+            Matriz[39, 9] = -1;
+            Matriz[39, 10] = -1;
+            Matriz[39, 11] = -1;
+            Matriz[39, 12] = 40;
+            Matriz[39, 13] = -1;
+            Matriz[39, 14] = -1;
+            Matriz[39, 15] = -1;
+            Matriz[39, 16] = -1;
+            Matriz[39, 17] = 1024;
+            Matriz[39, 18] = -1;
+            Matriz[39, 19] = -1;
+            Matriz[39, 20] = -1;
+
+            Matriz[40, 0] = -1;
+            Matriz[40, 1] = -1;
+            Matriz[40, 2] = -1;
+            Matriz[40, 3] = -1;
+            Matriz[40, 4] = -1;
+            Matriz[40, 5] = -1;
+            Matriz[40, 6] = -1;
+            Matriz[40, 7] = -1;
+            Matriz[40, 8] = -1;
+            Matriz[40, 9] = -1;
+            Matriz[40, 10] = -1;
+            Matriz[40, 11] = -1;
+            Matriz[40, 12] = -1;
+            Matriz[40, 13] = -1;
+            Matriz[40, 14] = -1;
+            Matriz[40, 15] = -1;
+            Matriz[40, 16] = -1;
+            Matriz[40, 17] = 1024;
+            Matriz[40, 18] = -1;
+            Matriz[40, 19] = -1;
+            Matriz[40, 20] = -1;
+
+            Matriz[41, 0] = -1;
+            Matriz[41, 1] = -1;
+            Matriz[41, 2] = -1;
+            Matriz[41, 3] = -1;
+            Matriz[41, 4] = -1;
+            Matriz[41, 5] = -1;
+            Matriz[41, 6] = -1;
+            Matriz[41, 7] = -1;
+            Matriz[41, 8] = -1;
+            Matriz[41, 9] = -1;
+            Matriz[41, 10] = -1;
+            Matriz[41, 11] = -1;
+            Matriz[41, 12] = -1;
+            Matriz[41, 13] = -1;
+            Matriz[41, 14] = -1;
+            Matriz[41, 15] = -1;
+            Matriz[41, 16] = -1;
+            Matriz[41, 17] = 1025;
+            Matriz[41, 18] = -1;
+            Matriz[41, 19] = -1;
+            Matriz[41, 20] = -1;
 
 
         }
