@@ -125,6 +125,10 @@
             {
                 return 4000;
             }
+            if (C == 30)
+            {
+                return 4000;
+            }
             Contador = 0;
             Nuevo_estado = Matriz[Estado, C];
 
@@ -145,6 +149,11 @@
                     banderaDecimal = false;
                 }
                 if (C == 30)
+                {
+                    return 4000;
+                }
+
+                if (C == 40)
                 {
                     return 4000;
                 }
@@ -271,7 +280,7 @@
 
 
                     default:
-                            valor = 22;
+                            valor = 40;
                             break;
                     }
                 }
@@ -601,7 +610,7 @@
             Matriz[12, 5] = -1;
             Matriz[12, 6] = -1;
 
-            Matriz[12, 7] = -1;//0..9 (Entra 13)
+            Matriz[12, 7] = 13;//0..9 (Entra 13)
 
             Matriz[12, 8] = -1;
             Matriz[12, 9] = -1;
