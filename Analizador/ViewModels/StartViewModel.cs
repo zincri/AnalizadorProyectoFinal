@@ -18,7 +18,9 @@
         int C = 0;
         int Contador = 0;
         int Nuevo_estado = 0;
+        int ultimo = 67;//Resultado con estado de aceptacion por defecto
         bool banderaDecimal = false;
+
         #endregion
 
         #region Properties
@@ -1045,6 +1047,97 @@
         }
         #endregion
     }
+
+
+    #region Sintactico
+    /// <summary>
+    /// Este Metodo verifica que el orden de la cadena sea correcto y
+    /// cumpla con las caracteristicas sintacticas.
+    /// </summary>
+    /// <returns>The orden.</returns>
+    /// <param name="listTokens">List tokens.</param>
+    private int verficaOrden(List<int> listTokens)
+    {
+        List<int> vOperandos = new List<int>();
+        vOperandos.Add(50);
+        vOperandos.Add(51);
+        vOperandos.Add(52);
+        vOperandos.Add(53);
+        vOperandos.Add(54);
+        vOperandos.Add(55);
+        vOperandos.Add(56);
+        vOperandos.Add(57);
+        vOperandos.Add(58);
+        vOperandos.Add(59);
+        vOperandos.Add(60);
+        vOperandos.Add(61);
+        vOperandos.Add(62);// Estados de Aceptacion Operandos
+
+  
+        List<int> vOperadores = new List<int>();
+        vOperadores.Add(63);
+        vOperadores.Add(64);
+        vOperadores.Add(65);
+        vOperadores.Add(66);//Estados de Aceptacion Operadores
+
+        List<int> vResultados = new List<int>();
+        vResultados.Add(67);
+        vResultados.Add(68);
+        vResultados.Add(69);
+        vResultados.Add(70);//Estados Aceptacion Result
+
+
+        int Espacio = 71;//Mi delimitador 
+
+        listTokens.RemoveAt(listTokens.Count - 1);
+        listTokens.RemoveAt(listTokens.Count - 1);
+        int[] arrayANA = listTokens.ToArray();
+        ultimo = arrayANA[listTokens.Count - 1];
+        listTokens.RemoveAt(listTokens.Count - 1);
+        arrayANA = listTokens.ToArray();
+        bool flagOp = false;
+
+        for (int i = 0; i < listTokens.Count; i++)
+        {
+            if (i == 0) { flagOp = true; }
+
+            if (i % 2 == 0)
+            {
+
+                if (flagOp == true)
+                {
+                    if (!vOperandos.Contains(arrayANA[i]))
+                    {
+                        return 0;
+                    }
+                    flagOp = false;
+
+                }
+                else
+                {
+                    if (!vOperadores.Contains(arrayANA[i]))
+                    {
+                        return 0;
+                    }
+                    flagOp = true;
+
+
+                }
+            }
+            else if (i % 2 != 0)
+            {
+                if (arrayANA[i] != Espacio)
+                    return 0;
+            }
+        }
+        if (!vResultados.Contains(ultimo))
+        {
+            return 0;
+        }
+        return 1;
+
+    }
+    #endregion
 }
 
 #region OLDCLASS
