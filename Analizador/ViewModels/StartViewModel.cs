@@ -1049,6 +1049,8 @@
     }
 
 
+    
+    
     #region Sintactico
     /// <summary>
     /// Este Metodo verifica que el orden de la cadena sea correcto y
@@ -1092,7 +1094,7 @@
         listTokens.RemoveAt(listTokens.Count - 1);
         listTokens.RemoveAt(listTokens.Count - 1);
         int[] arrayANA = listTokens.ToArray();
-        ultimo = arrayANA[listTokens.Count - 1];
+       // ultimo = arrayANA[listTokens.Count - 1];
         listTokens.RemoveAt(listTokens.Count - 1);
         arrayANA = listTokens.ToArray();
         bool flagOp = false;
@@ -1130,14 +1132,17 @@
                     return 0;
             }
         }
-        if (!vResultados.Contains(ultimo))
+        /* if (!vResultados.Contains(ultimo))
         {
             return 0;
         }
         return 1;
+        */
 
     }
     #endregion
+
+    
 }
 
 #region OLDCLASS
